@@ -293,3 +293,59 @@ DELETE FROM userTb WHERE userid = 'HHJ';
 ```sql
 SELECT col FROM tb GROUP BY col HAVING COUNT(*) > 50;
 ```
+
+## 7. JOIN
+
+`JOIN`
+
+- 두 개 이상의 테이블로부터 필요한 데이터를 연결해 하나의 포괄적인 구조로 결합시키는 연산
+- `INNER JOIN`, `OUTER JOIN`이 있음
+
+`INNER JOIN`
+
+- 두 테이블에 해당 필드값이 매칭되는 (두 테이블의 모든 필드로 구성된) 레코드만 가져옴
+- 조인하는 테이블의 `ON` 절의 조건이 일치하는 결과만 출력
+
+```sql
+SELECT * FROM tb1 JOIN tb2 ON tb2.id = tb1.id;
+
+SELECT * FROM tb1 INNER JOIN tb2 ON tb2.id = tb1.id WHERE tb2.age > 20;
+
+SELECT * FROM tb1 a JOIN tb2 b ON a.id = b.id;
+```
+
+`OUTER JOIN`
+
+- `LEFT OUTER JOIN`, `RIGHT OUTER JOIN`이 있음
+
+`LEFT OUTER JOIN`
+
+- 왼쪽 테이블에서 모든 레코드와 함께, 오른쪽 테이블에 왼쪽 테이블의 레코드와 매칭되는 레코드를 붙여서 가져옴
+
+```sql
+SELECT * FROM tb1 a LEFT OUTER JOIN tb2 b ON a.id = b.id;
+```
+
+`RIGHT OUTER JOIN`
+
+- 오른쪽 테이블에서 모든 레코드와 함께, 왼쪽 테이블에 왼쪽 테이블 레코드와 매칭되는 레코드를 붙여서 가져옴
+
+```sql
+SELECT * FROM tb1 a RIGHT OUTER JOIN tb2 b ON a.id = b.id;
+```
+
+## 8. Sub Query
+
+SubQuery
+
+- SQL문 안에 포함된 SQL문
+- SQL문 안에서 괄호를 사용해 서브쿼리문 추가 가능
+- 테이블과 테이블 간의 검색 시, 검색 범위(테이블 중 필요한 부분만 먼저 가져오도록)를 좁히는 기능에 주로 사용
+- JOIN은 출력 결과에 여러 테이블의 열이 필요한 경우에 유용
+- 대부분의 서브쿼리는 JOIN문으로 처리 가능
+
+```sql
+SELECT col FROM tb1 INNER JOIN tb2 ON tb1.code = tb2.code WHERE tb2.age = 30;
+
+SELECT col FROM tb1 WHERE code IN (SELECT code FROM tb2 WHERE tb2.age = 20);
+```
