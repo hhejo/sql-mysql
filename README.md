@@ -140,3 +140,156 @@ DELETE FROM mytable WHERE id = 1;
 
 DELETE FROM mytable; -- 모든 데이터 삭제
 ```
+
+## 4. 데이터 분석
+
+`LIMIT`
+
+- 결과 개수 제한
+
+```sql
+SELECT * FROM tb LIMIT 10;
+```
+
+`COUNT`
+
+- 데이터 행의 수
+
+```sql
+SELECT COUNT(*) FROM tb;
+```
+
+`DISTINCT`
+
+- 특정 컬럼값 출력 시 중복된 값을 출력하지 않음
+- 유일한 컬럼값 확인
+
+```sql
+SELECT DISTINCT col FROM tb;
+```
+
+`SUM`
+
+- 특정 컬럼값의 합계
+
+```sql
+SELECT SUM(col) FROM tb;
+```
+
+`AVG`
+
+- 특정 컬럼값의 평균
+
+```sql
+SELECT AVG(col) FROM tb;
+```
+
+`MAX`
+
+- 특정 컬럼값의 최댓값
+
+```sql
+SELECT MAX(col) FROM tb;
+```
+
+`MIN`
+
+- 특정 컬럼값의 최솟값
+
+```sql
+SELECT MIN(col) FROM tb;
+```
+
+`GROUP BY`
+
+- 특정 컬럼값을 기반으로 그룹핑
+
+```sql
+SELECT col1 FROM tb GROUP BY col2;
+SELECT COUNT(*) FROM tb GROUP BY col;
+```
+
+`ORDER BY`
+
+- 특정 컬럼값을 기준으로 데이터 정렬
+
+```sql
+SELECT * FROM tb ORDER BY col;
+SELECT * FROM tb ORDER BY col DESC;
+SELECT * FROM tb ORDER BY col ASC;
+```
+
+`AS`
+
+- 표시할 컬럼명 변경
+
+```sql
+SELECT COUNT(*) AS new FROM tb;
+```
+
+SQL 조건 순서
+
+```
+SELECT 컬럼
+FROM 테이블
+WHERE 조건
+GROUP BY 컬럼
+ORDER BY 컬럼
+LIMIT
+```
+
+## 5. FOREIGN KEY
+
+`FOREIGN KEY`
+
+```sql
+DROP DATABASE IF EXISTS db;
+CREATE DATABASE db;
+USE db;
+
+-- userTb
+DROP TABLE IF EXISTS userTb;
+CREATE TABLE userTb (
+  userid CHAR(8) NOT NULL PRIMARY KEY,
+  username VARCHAR(10) UNIQUE NOT NULL,
+  birthyear INT NOT NULL,
+  addr CHAR(2) NOT NULL,
+  phone CHAR(8),
+  height SMALLINT,
+  mdate DATE,
+  -- UNIQUE INDEX idx_userTb_name (name),
+  -- INDEX idx_userTb_addr (addr)
+);
+
+-- buyTb
+DROP TABLE IF EXISTS buyTb;
+CREATE TABLE buyTb (
+  num INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  userid CHAR(8) NOT NULL,
+  prodname CHAR(4),
+  groupname CHAR(4),
+  price INT NOT NULL,
+  amount SMALLINT NOT NULL,
+  FOREIGN KEY (userid) REFERENCES userTb(userid)
+);
+
+-- INSERT userTb
+INSERT INTO userTb VALUES('HHJ', '하하주', 1990, '서울', '12344321', '2024-1-1');
+
+-- INSERT buyTb
+INSERT INTO buyTb (userid, prodname, groupname, price, amount) VALUES('HHJ', '냉장고', '가전', 40, 7);
+
+-- DELETE 에러 (buyTb에 해당 userid를 참조하는 데이터 존재)
+DELETE FROM userTb WHERE userid = 'HHJ';
+```
+
+## 6. HAVING
+
+`HAVING`
+
+- 집계함수를 가지고 조건비교를 할 때 사용
+- `GROUP BY`와 함께 사용
+
+```sql
+SELECT col FROM tb GROUP BY col HAVING COUNT(*) > 50;
+```
